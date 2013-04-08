@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+  DocumentRoot "/var/www/vhosts/<%= node[:apache][:vhosts_name] %>/www/httpdocs"
+  ServerName <%= node[:apache][:vhosts_name] %> 
+  SetEnvIf Request_URI "\.(gif)|(jpg)|(jpeg)|(png)|(css)|(ico)$" nolog
+  LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %D" vhosts_combined
+  CustomLog /var/log/httpd/<%= node[:apache][:vhosts_name] %>.access.log vhosts_combined env=!nolog
+  ErrorLog /var/log/httpd/<%= node[:apache][:vhosts_name] %>.error.log
+  LogLevel debug
+  <Directory "/var/www/vhosts/<%= node[:apache][:vhosts_name] %>/www/httpdocs">
+    AllowOverride All
+    Options -Indexes
+  </Directory>
+</VirtualHost>
+
